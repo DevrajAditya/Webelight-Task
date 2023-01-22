@@ -43,7 +43,7 @@ mongoose
         },
         servers:[
           {
-            url :'http://localhost:6000/'
+            url :'http://localhost:3000'
           }
         ]
       },
@@ -57,6 +57,6 @@ mongoose
   app.use("/api/user", userRoute);
   app.use("/api/products", productRoute);
  
-  app.listen(process.env.PORT || 6000, () => {
-  console.log("Backend Server is runing at 6000 Port");
+  app.listen(process.env.PORT || 3000, () => {
+  console.log("Backend Server is runing at 3000 Port");
 });
