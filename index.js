@@ -7,6 +7,8 @@ const authRoute = require("./routes/auth")
 const productRoute = require("./routes/product")
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 dotenv.config();
 
@@ -31,6 +33,25 @@ mongoose
 }));
 
   app.use(express.json())
+
+  const options = {
+      definition: {
+        openapi: '3.0.0',
+        info: {
+          title: 'Webelight Assignment',
+          version: '1.0.0'
+        },
+        servers:[
+          {
+            url :'http://localhost:6000/'
+          }
+        ]
+      },
+      apis: ['./index.js']
+  }
+
+  const swaggerSpec = swaggerJSDoc(options)
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
   app.use("/api/auth", authRoute);
   app.use("/api/user", userRoute);
