@@ -16,7 +16,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyTokenAndAuthentication = (req, res, next) => {
   verifyToken(req, res, () => {
-    console.log(req.user)
+  
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
@@ -36,4 +36,11 @@ const verifyTokenAndAdmin = (req, res, next) => {
     });
   };
 
-module.exports = { verifyToken, verifyTokenAndAuthentication, verifyTokenAndAdmin };
+  const isLoggedIn = (req, res, next)=>{
+    if (!req.session.user){
+      return res.json({msg: " User Logged Out"})
+    } 
+    next();
+}
+
+module.exports = { verifyToken, verifyTokenAndAuthentication, verifyTokenAndAdmin, isLoggedIn };

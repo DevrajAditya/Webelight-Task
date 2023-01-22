@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 const userRoute = require("./routes/user")
 const authRoute = require("./routes/auth")
+const cookieParser = require("cookie-parser");
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 dotenv.config();
 
@@ -14,7 +17,21 @@ mongoose
   .then(() => console.log("Db is connected Successfully"))
   .catch((err) => {console.log("Error", err)});
 
+  app.use(session({
+    name: '',
+    secret: process.env.PASSWORD_SEC,
+    httpOnly: true,
+    secure: true,
+    maxAge: 1000 * 60 * 60 * 7,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URL
+    })
+}));
+
   app.use(express.json())
+  app.use(cookieParser());
 
   app.use("/api/auth", authRoute);
   app.use("/api/user", userRoute);
