@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const userRoute = require("./routes/user")
 const authRoute = require("./routes/auth")
 const productRoute = require("./routes/product")
-const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
@@ -32,7 +31,6 @@ mongoose
 }));
 
   app.use(express.json())
-  app.use(cookieParser());
 
   app.use("/api/auth", authRoute);
   app.use("/api/user", userRoute);

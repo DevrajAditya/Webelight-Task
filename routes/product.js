@@ -3,7 +3,9 @@ const Product = require("../models/Product");
 
 const { verifyTokenAndAdmin } = require("./verifyToken");
 
-// Create Product
+/**
+ * Only Admin can add product
+ */
 
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
   const newProduct = new Product(req.body);
@@ -16,7 +18,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-// Update Product
+// Only Admin can update the Products
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -32,8 +34,8 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-// Delete Product
 
+// Admin can Delete Product
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
@@ -43,8 +45,12 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-// Get Product
 
+/**
+ * Any user can get the product
+ * @param id
+ * 
+ */
 router.get("/find/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -54,7 +60,10 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-// Get All Products
+/**
+ * Any user can get the product
+ * Search by category and latest product.
+ */
 
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
@@ -64,7 +73,7 @@ router.get("/", async (req, res) => {
     let products;
 
     if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+      products = await Product.find().sort({ createdAt: -1 }).limit(5);
     } else if (qCategory) {
       products = await Product.find({
         categories: {

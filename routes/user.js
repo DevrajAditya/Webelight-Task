@@ -8,7 +8,11 @@ const {
 } = require("./verifyToken");
 
 
-// Update
+/**
+ * Update User route
+ * @param:id
+ * 
+ */
 
 router.put("/:id", verifyTokenAndAuthentication, async (req, res)=>{
     if(req.body.password){
@@ -31,7 +35,11 @@ router.put("/:id", verifyTokenAndAuthentication, async (req, res)=>{
       }
     })
 
-// Delete user
+/**
+ * Delete User route
+ * @param:id
+ * 
+ */
 router.delete("/:id", async (req, res) => {
     try {
       await User.findByIdAndDelete(req.params.id);
@@ -42,8 +50,10 @@ router.delete("/:id", async (req, res) => {
   });
 
 
-// Get User
-
+/**
+ * Search User 
+ * Only Admin can find the user
+ */
 router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -55,8 +65,10 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-// Get All User
-
+/**
+ * Find all User 
+ * Only Admin can find all user
+ */
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
     const users = await User.find();

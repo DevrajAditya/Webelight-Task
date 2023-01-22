@@ -37,7 +37,7 @@ const verifyTokenAndAdmin = (req, res, next) => {
 
   const isLoggedIn = (req, res, next)=>{
     if (!req.session.user){
-      return res.json({msg: " User Logged Out"})
+      return res.status(400).json({msg: "Please Login again.."})
     } 
     next();
 }

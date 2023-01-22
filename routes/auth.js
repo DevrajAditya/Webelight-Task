@@ -2,10 +2,15 @@ const router = require("express").Router();
 const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
-const expressJwt = require("express-jwt");
 const { isLoggedIn } = require("./verifyToken");
-// Register
 
+
+/**
+ * Register
+ * @username
+ * @email
+ * @password
+ */
 router.post("/register", async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -23,7 +28,11 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login
+/**
+ * Login
+ * @email
+ * @password
+ */
 
 router.post("/login", async (req, res) => {
   try {
@@ -56,10 +65,7 @@ router.post("/login", async (req, res) => {
     }
 
     await req.session.save();
-    // res.cookie("token", accessToken, {expiresIn: "1d"})
-
     const { password, ...others } = user._doc;
-
     return res.status(200).json({...others, accessToken});
   } catch (error) {
     return res.status(500).json(error);
@@ -71,22 +77,20 @@ router.post("/login", async (req, res) => {
 router.get("/logout",async(req, res)=>{
   try {
     await req.session.destroy();
-  return  res.json("User Logout Sucessfully");
+  return  res.status(200).json("User Logout Sucessfully");
 
 } catch (err) {
-    console.error('Error logging out:', err);
-    return next(new Error('Error logging out'));
+    return next(new Error('Error logging out', err));
 }
 
 })
 
+/**
+ * Test logout to test the logout feature
+ */
 
 router.get('/testlogout', isLoggedIn, (req,res)=>{
-  // if (!req.session.user){
-  //   return res.json({msg: "logedout, login again"})
-  // } else{
-    return res.json({l:'L'})
-  // }
+    return res.status(200).json({msg: 'User is still logged in'})
 })
 
 module.exports = router;
