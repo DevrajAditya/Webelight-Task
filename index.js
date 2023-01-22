@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 const userRoute = require("./routes/user")
 const authRoute = require("./routes/auth")
+const productRoute = require("./routes/product")
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -35,6 +36,7 @@ mongoose
 
   app.use("/api/auth", authRoute);
   app.use("/api/user", userRoute);
+  app.use("/api/products", productRoute);
  
   app.listen(process.env.PORT || 6000, () => {
   console.log("Backend Server is runing at 6000 Port");
